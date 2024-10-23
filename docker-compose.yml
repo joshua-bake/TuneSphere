@@ -1,0 +1,21 @@
+version: '3.8'  # You can specify a newer version if needed
+
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:80"  # Assuming your frontend serves on port 80 in the container
+    volumes:
+      - ./frontend:/app  # Mount the frontend directory
+    depends_on:
+      - backend  # Ensure backend is started before frontend
+
+  backend:
+    build: ./backend
+    ports:
+      - "5001:5000"  # Map port 5001 on the host to port 5000 in the container
+    volumes:
+      - ./backend:/app  # Mount the backend directory
+    environment:
+      - FLASK_DEBUG=1  # Set Flask to development mode
+    command: flask run --host=0.0.0.0  # Ensure Flask listens on all interfaces
